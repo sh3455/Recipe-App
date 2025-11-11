@@ -41,6 +41,7 @@ dependencies:
   provider: ^6.1.5+1
   carousel_slider: ^5.1.1
   expandable_page_view: ^1.0.17
+  skeletonizer: ^1.4.3
 
 dev_dependencies:
   flutter_test:

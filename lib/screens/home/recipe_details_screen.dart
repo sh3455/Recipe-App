@@ -24,12 +24,29 @@ class RecipeDetailsScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: size.height*0.1,),
-              Text(recipeModel.recipeName,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                  color: AppColor.mainColor
-                ),),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back),
+                  ),
+                  Expanded(
+                    child: Text(
+                      recipeModel.recipeName,
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        color: AppColor.mainColor,
+                      ),
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
               Divider(
                 indent: 10,
                 endIndent: 10,

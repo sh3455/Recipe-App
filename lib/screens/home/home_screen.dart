@@ -6,8 +6,7 @@ import 'package:recipe/models/recipe_model.dart';
 import 'package:recipe/provider/recipe_provider.dart';
 import 'package:recipe/screens/home/recipe_details_screen.dart';
 import 'package:recipe/services/recipe_service.dart';
-import 'package:expandable_page_view/expandable_page_view.dart';
-
+import 'package:skeletonizer/skeletonizer.dart';
 class HomeScreen extends StatefulWidget {
    HomeScreen({super.key});
    static String routeName ="HomeScreen";
@@ -19,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? recipeName;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +117,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fontSize: 20,
                                         fontWeight: FontWeight.w700
                                     ),),
-                                  Image.network(recipe.image,
-                                    width: size.width*0.6,
-                                    height: size.height*0.4,
-                                    fit: BoxFit.fill,
+                                  Image.network(
+                                    recipe.image,
+                                    width: size.width * 0.6,
+                                    height: size.height * 0.4,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) return child; // الصورة ظهرت
+                                      return Container(
+                                        width: size.width * 0.6,
+                                        height: size.height * 0.4,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress.expectedTotalBytes != null
+                                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                : null,
+                                            color: AppColor.mainColor,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        width: size.width * 0.6,
+                                        height: size.height * 0.4,
+                                        color: Colors.grey[200],
+                                        child: Icon(Icons.error, color: Colors.red, size: 40),
+                                      );
+                                    },
                                   ),
                                   Text(recipe.ingredients,
                                     style: TextStyle(
